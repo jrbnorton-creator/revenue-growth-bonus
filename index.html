@@ -13,18 +13,15 @@
     --text-main: #0f172a;
     --text-muted: #64748b;
     --border-color: #e2e8f0;
-    
-    --primary: #4f46e5;   /* Indigo 600 */
+    --primary: #4f46e5;
     --primary-soft: #e0e7ff;
-    --success: #10b981;   /* Emerald 500 */
+    --success: #10b981;
     --success-soft: #d1fae5;
-    --warning: #f59e0b;   /* Amber 500 */
+    --warning: #f59e0b;
     --warning-soft: #fef3c7;
-    --danger: #ef4444;    /* Red 500 */
-    
+    --danger: #ef4444;
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -38,411 +35,283 @@
     padding-bottom: 4rem;
   }
 
-  /* Subtle background mesh gradient */
   body::before {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: 
-      radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, transparent 50%), 
-      radial-gradient(at 50% 0%, hsla(225,39%,30%,0) 0, transparent 50%), 
-      radial-gradient(at 100% 0%, hsla(339,49%,30%,0) 0, transparent 50%);
-    background-image: 
+    background-image:
       radial-gradient(at 40% 20%, hsla(28,100%,74%,0.1) 0px, transparent 50%),
       radial-gradient(at 80% 0%, hsla(189,100%,56%,0.1) 0px, transparent 50%),
       radial-gradient(at 0% 50%, hsla(340,100%,76%,0.1) 0px, transparent 50%);
     z-index: -1;
   }
 
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem;
-  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
 
-  /* Typography & Header */
-  header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 3rem;
-  }
-  
+  header { text-align: center; max-width: 700px; margin: 0 auto 2.5rem; }
+
   h1 {
-    font-size: 2.25rem;
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    color: var(--text-main);
-    margin-bottom: 0.75rem;
-  }
-  
-  .subtitle {
-    font-size: 1.125rem;
-    color: var(--text-muted);
-    line-height: 1.6;
+    font-size: 2.25rem; font-weight: 800;
+    letter-spacing: -0.025em; margin-bottom: 0.75rem;
   }
 
-  /* Card Styles */
+  .subtitle { font-size: 1.125rem; color: var(--text-muted); line-height: 1.6; }
+
   .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    box-shadow: var(--shadow-sm);
-    padding: 1.5rem;
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: var(--card-bg); border: 1px solid var(--border-color);
+    border-radius: 16px; box-shadow: var(--shadow-sm); padding: 1.5rem;
   }
 
   .card h2, .card h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-main);
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-size: 1rem; font-weight: 600; margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.5rem;
   }
 
-  /* KPI Grid */
+  /* --- Toggle --- */
+  .toggle-section { margin-bottom: 2rem; text-align: center; }
+
+  .toggle-wrapper {
+    display: inline-flex; align-items: center; gap: 1rem;
+    background: white; padding: 0.75rem 1.5rem;
+    border-radius: 12px; border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .toggle-label {
+    font-size: 0.875rem; font-weight: 500;
+    color: var(--text-muted); transition: color 0.2s;
+  }
+  .toggle-label.active { color: var(--text-main); font-weight: 600; }
+
+  .toggle-switch {
+    position: relative; display: inline-block;
+    width: 48px; height: 26px; cursor: pointer;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: #cbd5e1; border-radius: 26px; transition: 0.3s;
+  }
+  .toggle-slider::before {
+    content: ''; position: absolute;
+    height: 20px; width: 20px; left: 3px; bottom: 3px;
+    background: white; border-radius: 50%; transition: 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+  .toggle-desc { font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.75rem; }
+
+  /* --- KPI Grid --- */
   .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem; margin-bottom: 2rem;
   }
 
   .kpi-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    flex-direction: column;
+    background: white; padding: 1.5rem; border-radius: 12px;
+    border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column;
   }
 
   .kpi-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 0.875rem; font-weight: 500; color: var(--text-muted);
+    margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;
   }
 
   .kpi-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-main);
-    letter-spacing: -0.03em;
+    font-size: 2rem; font-weight: 700; letter-spacing: -0.03em;
+    transition: opacity 0.3s;
   }
 
-  .kpi-sub {
-    font-size: 0.875rem;
-    margin-top: auto;
-    padding-top: 0.5rem;
-  }
+  .kpi-sub { font-size: 0.875rem; margin-top: auto; padding-top: 0.5rem; }
 
-  /* Main Dashboard Grid */
+  /* --- Dashboard Grid --- */
   .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr; /* Simulator narrower, chart wider */
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    display: grid; grid-template-columns: 1fr 1.5fr;
+    gap: 1.5rem; margin-bottom: 3rem;
   }
+  @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
-  @media (max-width: 900px) {
-    .dashboard-grid { grid-template-columns: 1fr; }
-  }
-
-  /* Simulator */
   .sim-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin-bottom: 1.5rem;
   }
 
   .input-group label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 0.375rem;
-    text-transform: uppercase;
+    display: block; font-size: 0.75rem; font-weight: 600;
+    color: var(--text-muted); margin-bottom: 0.375rem; text-transform: uppercase;
   }
 
   .input-group input {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: all 0.2s;
-    background: #f9fafb;
+    width: 100%; padding: 0.75rem; font-size: 1rem;
+    border: 1px solid var(--border-color); border-radius: 8px;
+    transition: all 0.2s; background: #f9fafb;
   }
-
   .input-group input:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: white;
-    box-shadow: 0 0 0 3px var(--primary-soft);
+    outline: none; border-color: var(--primary);
+    background: white; box-shadow: 0 0 0 3px var(--primary-soft);
   }
 
-  /* Progress Bar */
-  .bar-container {
-    margin: 2rem 0 1rem;
-  }
+  /* --- Progress Bar --- */
+  .bar-container { margin: 2rem 0 1rem; }
 
   .bar-wrap {
-    position: relative;
-    height: 12px;
-    background: #f1f5f9;
-    border-radius: 6px;
-    overflow: visible; 
-    margin-bottom: 2.5rem; /* Space for marker label */
+    position: relative; height: 12px; background: #f1f5f9;
+    border-radius: 6px; overflow: visible; margin-bottom: 2.5rem;
   }
 
   .bar-fill {
-    height: 100%;
-    border-radius: 6px;
+    height: 100%; border-radius: 6px;
     background: linear-gradient(90deg, var(--primary), #818cf8);
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
   }
-  
-  .bar-fill.hit {
-    background: linear-gradient(90deg, var(--success), #34d399);
-  }
+  .bar-fill.hit { background: linear-gradient(90deg, var(--success), #34d399); }
 
   .bar-marker {
-    position: absolute;
-    top: -4px;
-    bottom: -4px;
-    width: 2px;
-    background: var(--text-main);
-    z-index: 10;
+    position: absolute; top: -4px; bottom: -4px; width: 2px;
+    background: var(--text-main); z-index: 10; transition: left 0.4s;
   }
-  
   .bar-marker-label {
-    position: absolute;
-    top: -24px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-main);
-    white-space: nowrap;
+    position: absolute; top: -24px; left: 50%; transform: translateX(-50%);
+    font-size: 0.75rem; font-weight: 700; white-space: nowrap;
   }
 
-  /* Result Box */
   .result-box {
-    padding: 1rem;
-    border-radius: 8px;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    text-align: center;
-    border-left: 4px solid transparent;
+    padding: 1rem; border-radius: 8px; font-size: 0.9375rem;
+    font-weight: 500; text-align: center; border-left: 4px solid transparent;
   }
   .result-box.idle { background: #f8fafc; color: var(--text-muted); border-left-color: var(--border-color); }
   .result-box.pending { background: var(--warning-soft); color: #92400e; border-left-color: var(--warning); }
   .result-box.earned { background: var(--success-soft); color: #065f46; border-left-color: var(--success); }
 
-  /* Chart Area */
-  .chart-container {
-    position: relative;
-    height: 300px;
-    width: 100%;
-  }
+  .chart-container { position: relative; height: 300px; width: 100%; }
 
-  /* Process Steps */
-  .process-section {
-    margin-top: 4rem;
-  }
+  /* --- Steps --- */
+  .process-section { margin-top: 4rem; }
 
   .section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 2.5rem;
-    color: var(--text-main);
+    font-size: 1.5rem; font-weight: 700;
+    text-align: center; margin-bottom: 2.5rem;
   }
 
   .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    position: relative;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2rem; position: relative;
   }
-
-  /* Connecting line for desktop */
   .steps-grid::before {
-    content: '';
-    position: absolute;
-    top: 24px;
-    left: 50px;
-    right: 50px;
-    height: 2px;
-    background: var(--border-color);
-    z-index: 0;
+    content: ''; position: absolute; top: 24px; left: 50px; right: 50px;
+    height: 2px; background: var(--border-color); z-index: 0;
   }
 
-  .step-card {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-  }
+  .step-card { position: relative; z-index: 1; text-align: center; }
 
   .step-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: white;
-    border: 2px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.25rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    font-size: 1.125rem;
-    transition: all 0.3s;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: white; border: 2px solid var(--border-color);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.25rem; font-weight: 700;
+    color: var(--text-muted); font-size: 1.125rem; transition: all 0.3s;
   }
-
   .step-card:hover .step-icon {
-    border-color: var(--primary);
-    color: var(--primary);
-    transform: scale(1.1);
+    border-color: var(--primary); color: var(--primary); transform: scale(1.1);
   }
 
-  .step-title {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: var(--text-main);
-  }
-
-  .step-desc {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-
+  .step-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .step-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
   .highlight { color: var(--primary); font-weight: 600; }
 
   @media (max-width: 768px) {
     .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .steps-grid::before { display: none; } /* Hide horizontal line on mobile */
+    .steps-grid::before { display: none; }
     .step-card { text-align: left; display: flex; gap: 1rem; }
     .step-icon { margin: 0; flex-shrink: 0; }
   }
 
-  /* FAQ Section */
-  .faq-section {
-    margin-top: 4rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .faq-grid {
-    display: grid;
-    gap: 1rem;
-  }
+  /* --- FAQ --- */
+  .faq-section { margin-top: 4rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .faq-grid { display: grid; gap: 1rem; }
 
   details {
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
+    background: white; border: 1px solid var(--border-color);
+    border-radius: 8px; overflow: hidden;
   }
-
   summary {
-    padding: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 1rem; font-weight: 600; cursor: pointer; list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
   }
-  
   summary::-webkit-details-marker { display: none; }
-
-  summary::after {
-    content: '+';
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: var(--text-muted);
-  }
-
+  summary::after { content: '+'; font-size: 1.25rem; font-weight: 400; color: var(--text-muted); }
   details[open] summary::after { content: '-'; }
 
   .faq-answer {
-    padding: 0 1rem 1rem;
-    color: var(--text-muted);
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    border-top: 1px solid transparent;
+    padding: 0 1rem 1rem; color: var(--text-muted);
+    font-size: 0.9375rem; line-height: 1.6; border-top: 1px solid transparent;
   }
-  
-  details[open] .faq-answer {
-    border-top-color: #f1f5f9;
-    padding-top: 1rem;
-  }
+  details[open] .faq-answer { border-top-color: #f1f5f9; padding-top: 1rem; }
 
   footer {
-    text-align: center;
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-muted);
-    font-size: 0.75rem;
+    text-align: center; margin-top: 4rem; padding-top: 2rem;
+    border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.75rem;
   }
-
-  /* End of Styles */
 </style>
 </head>
 <body>
 
-<!-- Main Content -->
 <div class="container">
-  
+
   <header>
     <h1>Revenue Growth Bonus</h1>
-    <p class="subtitle">Sniffers Mag + Higher Ground. 10% combined growth triggers a $20,000 bonus. Baseline: FY2025. Reimbursements excluded.</p>
+    <p class="subtitle">Sniffers Mag + Higher Ground. 10% combined growth triggers a $20,000 bonus. Baseline: FY2025. Use the toggle to compare source figures against a commissions-only view.</p>
   </header>
 
-  <!-- Strategic Context -->
+  <!-- Context card -->
   <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--primary); background: #f1f5f9;">
-    <h3 style="margin-bottom: 0.5rem; color: var(--primary);">Strategic Decision Needed</h3>
+    <h3 style="margin-bottom: 0.5rem; color: var(--primary);">What's changed</h3>
     <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">
-      To produce a sustainable structure, we must first select a <strong>fair start date</strong> (FY25 or FY26) and determine the exact point the bonus kicks in without jeopardising the company's stability.
+      The updated P&L now separates <strong>advances</strong> from commissions in Higher Ground's trading income. Use the toggle below to compare the full source figures against a commissions-only view, helping determine a fair baseline for the bonus calculation.
     </p>
   </div>
 
-  <!-- Key Metrics Row -->
+  <!-- Toggle -->
+  <div class="toggle-section">
+    <div class="toggle-wrapper">
+      <span class="toggle-label active" id="label-source">Source P&L</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="adj-toggle" onchange="toggleView()">
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label" id="label-adjusted">Commissions only</span>
+    </div>
+    <p class="toggle-desc" id="toggle-desc">Showing total trading income as reported in the P&L, including advances and reimbursements.</p>
+  </div>
+
+  <!-- KPIs -->
   <div class="kpi-grid">
     <div class="kpi-card">
       <div class="kpi-label">Baseline (FY2025)</div>
-      <div class="kpi-value">$1,440,096</div>
-      <div class="kpi-sub" style="color: var(--text-muted)">Starting point</div>
+      <div class="kpi-value" id="kpi-baseline"></div>
+      <div class="kpi-sub" style="color: var(--text-muted)" id="kpi-baseline-sub">Total trading income</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">10% Target (Bonus Starts Here)</div>
-      <div class="kpi-value" style="color: var(--warning);">$1,584,106</div>
+      <div class="kpi-label">10% target (bonus starts here)</div>
+      <div class="kpi-value" style="color: var(--warning);" id="kpi-target"></div>
       <div class="kpi-sub" style="color: var(--warning)">Threshold</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Growth Needed</div>
-      <div class="kpi-value" style="color: var(--primary);">$144,010</div>
+      <div class="kpi-label">Growth needed</div>
+      <div class="kpi-value" style="color: var(--primary);" id="kpi-growth"></div>
       <div class="kpi-sub" style="color: var(--primary)">To trigger bonus</div>
     </div>
   </div>
 
   <div class="dashboard-grid">
-    <!-- Calculator Column -->
+    <!-- Simulator -->
     <div class="card">
-      <h2>Revenue Simulator</h2>
-      
+      <h2>Revenue simulator</h2>
+
       <div class="sim-inputs">
         <div class="input-group">
           <label>Sniffers Mag ($)</label>
@@ -457,8 +326,8 @@
       <div class="bar-container">
         <div class="bar-wrap">
           <div class="bar-fill" id="bar" style="width:0%"></div>
-          <div class="bar-marker" style="left:66.7%">
-            <span class="bar-marker-label">Bonus Starts Here</span>
+          <div class="bar-marker" id="bar-marker">
+            <span class="bar-marker-label">Bonus starts here</span>
           </div>
         </div>
       </div>
@@ -468,25 +337,25 @@
       </div>
     </div>
 
-    <!-- Chart Column -->
+    <!-- Chart -->
     <div class="card">
-      <h2>Historical Revenue</h2>
+      <h2>Historical revenue</h2>
       <div class="chart-container">
         <canvas id="chart"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- Steps / How To -->
+  <!-- Steps -->
   <div class="process-section">
     <h2 class="section-title">How to measure the bonus</h2>
-    
+
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-icon">1</div>
         <div>
           <div class="step-title">Baseline</div>
-          <div class="step-desc"><span class="highlight">FY2025: $1,440,096</span> combined revenue (reimbursements excluded).</div>
+          <div class="step-desc"><span class="highlight" id="step-baseline"></span></div>
         </div>
       </div>
 
@@ -502,7 +371,7 @@
         <div class="step-icon">3</div>
         <div>
           <div class="step-title">Compare</div>
-          <div class="step-desc"><span class="highlight">Combined revenue / $1,440,096 = growth %.</span></div>
+          <div class="step-desc"><span class="highlight">Combined revenue / baseline = growth %.</span></div>
         </div>
       </div>
 
@@ -510,7 +379,7 @@
         <div class="step-icon" style="border-color: var(--success); color: var(--success);">4</div>
         <div>
           <div class="step-title">Result</div>
-          <div class="step-desc"><span class="highlight" style="color: var(--success);">10%+ ($1,584,106) = $20K bonus.</span> Below = no bonus.</div>
+          <div class="step-desc"><span class="highlight" style="color: var(--success);" id="step-result"></span> Below = no bonus.</div>
         </div>
       </div>
     </div>
@@ -518,15 +387,19 @@
 
   <!-- FAQ -->
   <div class="faq-section">
-    <h2 class="section-title" style="font-size: 1.25rem; margin-bottom: 1.5rem;">Common Questions</h2>
+    <h2 class="section-title" style="font-size: 1.25rem; margin-bottom: 1.5rem;">Common questions</h2>
     <div class="faq-grid">
       <details>
         <summary>Why FY2025 and not an average?</summary>
         <div class="faq-answer">FY2023 includes a one-off $124K grant and Higher Ground was half its current size. Averaging in those years sets an artificially easy target. FY2025 reflects the business as it stands today.</div>
       </details>
       <details>
-        <summary>What about Higher Ground's reimbursements?</summary>
-        <div class="faq-answer">Reimbursements ($63K-$209K/yr) are pass-through costs. They have been excluded from all figures. Higher Ground revenue is commissions only, giving a cleaner picture of actual earned income.</div>
+        <summary>What is the difference between the two toggle views?</summary>
+        <div class="faq-answer"><strong>Source P&L</strong> shows total trading income as reported, including advances to artists and reimbursement pass-throughs. <strong>Commissions only</strong> strips out advances ($429K in FY2025) and reimbursements ($90K in FY2025), leaving only earned commission income for Higher Ground. Comparing the two helps determine a fair baseline figure.</div>
+      </details>
+      <details>
+        <summary>Why do advances matter?</summary>
+        <div class="faq-answer">Advances are money paid to artists upfront against future earnings. They inflate trading income but are recoupable, not purely earned revenue. Separating them gives a cleaner picture of sustainable income growth. The updated P&L now breaks these out as a separate line item.</div>
       </details>
       <details>
         <summary>Should we update the baseline once FY2026 closes?</summary>
@@ -540,30 +413,55 @@
   </div>
 
   <footer>
-    Source: Xero P&L (cash basis), years ended 31 March. Sniffers Mag Limited and Higher Ground Limited.
+    Source: Xero P&L (cash basis), years ended 31 March. Sniffers Mag Limited and Higher Ground Limited. Updated 13 March 2026.
   </footer>
 </div>
 
 <script>
-  const BASELINE = 1440096.37;
-  const TARGET = BASELINE * 1.1;
-  const MAX_BAR = BASELINE * 1.5;
+  /* =========================================================
+     DATA  (from Xero P&L exports, 13 Mar 2026)
+     Index order: FY2023, FY2024, FY2025, FY2026 YTD
+     ========================================================= */
+  const SM = [627234.50, 420105.34, 521655.08, 197972.00];
 
-  function parse(v) {
-    const c = v.replace(/[^0-9.]/g, '');
-    return c ? parseFloat(c) : 0;
+  const HG = {
+    advances:       [100229.10, 244791.90, 429213.48, 286231.29],
+    commissions:    [390779.67, 676044.98, 484662.34, 470645.89],
+    reimbursements: [62966.81,  209320.47, 89915.07,  147242.19],
+    total:          [553975.58, 1130157.35, 1003790.89, 904119.37]
+  };
+
+  const BASE_IDX = 2; // FY2025
+
+  /* ---- Helpers ---- */
+  function isAdj()       { return document.getElementById('adj-toggle').checked; }
+  function baseline(adj) { return SM[BASE_IDX] + (adj ? HG.commissions[BASE_IDX] : HG.total[BASE_IDX]); }
+  function target(adj)   { return baseline(adj) * 1.1; }
+  function fmt(n)        { return '$' + Math.round(n).toLocaleString('en-NZ'); }
+  function parse(v)      { var c = v.replace(/[^0-9.]/g, ''); return c ? parseFloat(c) : 0; }
+
+  /* ---- KPI + Steps ---- */
+  function updateKPIs() {
+    var adj = isAdj(), b = baseline(adj), t = target(adj);
+    document.getElementById('kpi-baseline').textContent = fmt(b);
+    document.getElementById('kpi-target').textContent   = fmt(t);
+    document.getElementById('kpi-growth').textContent    = fmt(t - b);
+    document.getElementById('kpi-baseline-sub').textContent = adj ? 'Commissions only' : 'Total trading income';
+    document.getElementById('step-baseline').textContent = 'FY2025: ' + fmt(b) + ' combined revenue.';
+    document.getElementById('step-result').textContent   = '10%+ (' + fmt(t) + ') = $20K bonus.';
   }
 
-  function fmt(n) {
-    return '$' + Math.round(n).toLocaleString('en-NZ');
-  }
-
+  /* ---- Simulator ---- */
   function calc() {
-    const sm = parse(document.getElementById('in-sm').value);
-    const hg = parse(document.getElementById('in-hg').value);
-    const total = sm + hg;
-    const bar = document.getElementById('bar');
-    const result = document.getElementById('result');
+    var sm = parse(document.getElementById('in-sm').value);
+    var hg = parse(document.getElementById('in-hg').value);
+    var total = sm + hg;
+    var bar = document.getElementById('bar');
+    var result = document.getElementById('result');
+    var adj = isAdj(), b = baseline(adj), t = target(adj), maxBar = b * 1.5;
+
+    // position marker
+    document.getElementById('bar-marker').style.left = Math.min((t / maxBar) * 100, 95) + '%';
 
     if (total === 0) {
       bar.style.width = '0%';
@@ -573,50 +471,83 @@
       return;
     }
 
-    const pct = Math.min((total / MAX_BAR) * 100, 100);
-    const growthPct = ((total - BASELINE) / BASELINE * 100).toFixed(1);
+    var pct = Math.min((total / maxBar) * 100, 100);
+    var g = ((total - b) / b * 100).toFixed(1);
     bar.style.width = pct + '%';
 
-    if (total >= TARGET) {
+    if (total >= t) {
       bar.className = 'bar-fill hit';
       result.className = 'result-box earned';
-      result.textContent = 'Bonus earned. Combined ' + fmt(total) + ' is +' + growthPct + '% growth.';
+      result.textContent = 'Bonus earned. Combined ' + fmt(total) + ' is +' + g + '% growth.';
     } else {
       bar.className = 'bar-fill';
       result.className = 'result-box pending';
-      const gap = TARGET - total;
-      result.textContent = fmt(gap) + ' still needed. Combined ' + fmt(total) + ' is ' + (growthPct >= 0 ? '+' : '') + growthPct + '% growth.';
+      result.textContent = fmt(t - total) + ' still needed. Combined ' + fmt(total) + ' is ' + (g >= 0 ? '+' : '') + g + '% growth.';
     }
   }
 
-  // Chart
-  Chart.defaults.color = '#64748b';
+  /* ---- Toggle ---- */
+  function toggleView() {
+    var adj = isAdj();
+
+    document.getElementById('label-source').className   = 'toggle-label' + (adj ? '' : ' active');
+    document.getElementById('label-adjusted').className  = 'toggle-label' + (adj ? ' active' : '');
+    document.getElementById('toggle-desc').textContent   = adj
+      ? 'Excluding advances and reimbursements from Higher Ground. Showing commissions only for a cleaner growth measure.'
+      : 'Showing total trading income as reported in the P&L, including advances and reimbursements.';
+
+    // chart datasets 2 = HG Advances, 3 = HG Reimbursements
+    revenueChart.data.datasets[2].hidden = adj;
+    revenueChart.data.datasets[3].hidden = adj;
+    revenueChart.data.datasets[4].data   = [null, null, null, null, target(adj)];
+    revenueChart.update();
+
+    updateKPIs();
+    calc();
+  }
+
+  /* ---- Chart ---- */
+  Chart.defaults.color       = '#64748b';
   Chart.defaults.borderColor = '#e2e8f0';
   Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
-  Chart.defaults.font.size = 12;
+  Chart.defaults.font.size   = 12;
 
-  new Chart(document.getElementById('chart'), {
+  var revenueChart = new Chart(document.getElementById('chart'), {
     type: 'bar',
     data: {
       labels: ['FY2023', 'FY2024', 'FY2025', 'FY2026 YTD', 'Target'],
       datasets: [
         {
           label: 'Sniffers Mag',
-          data: [627234.50, 420105.34, 521655.08, 197972.00, null],
+          data: SM.concat([null]),
           backgroundColor: '#6366f1',
           borderRadius: 4,
           hoverBackgroundColor: '#4f46e5'
         },
         {
-          label: 'Higher Ground',
-          data: [493522.91, 916271.41, 918441.29, 746865.79, null],
+          label: 'HG Commissions',
+          data: HG.commissions.concat([null]),
           backgroundColor: '#a855f7',
           borderRadius: 4,
           hoverBackgroundColor: '#9333ea'
         },
         {
+          label: 'HG Advances',
+          data: HG.advances.concat([null]),
+          backgroundColor: '#c084fc',
+          borderRadius: 4,
+          hoverBackgroundColor: '#a855f7'
+        },
+        {
+          label: 'HG Reimbursements',
+          data: HG.reimbursements.concat([null]),
+          backgroundColor: '#e9d5ff',
+          borderRadius: 4,
+          hoverBackgroundColor: '#d8b4fe'
+        },
+        {
           label: '10% target',
-          data: [null, null, null, null, TARGET],
+          data: [null, null, null, null, target(false)],
           backgroundColor: 'rgba(245, 158, 11, 0.2)',
           borderColor: '#f59e0b',
           borderWidth: 2,
@@ -631,18 +562,16 @@
       maintainAspectRatio: false,
       plugins: {
         legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
-        tooltip: { 
-          backgroundColor: '#1e293b',
-          padding: 12,
-          cornerRadius: 8,
-          callbacks: { label: c => c.dataset.label + ': $' + Math.round(c.parsed.y).toLocaleString() } 
+        tooltip: {
+          backgroundColor: '#1e293b', padding: 12, cornerRadius: 8,
+          callbacks: { label: function(c) { return c.dataset.label + ': $' + Math.round(c.parsed.y).toLocaleString(); } }
         }
       },
       scales: {
         x: { stacked: true, grid: { display: false } },
         y: {
           stacked: true,
-          ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' },
+          ticks: { callback: function(v) { return '$' + (v / 1000).toFixed(0) + 'K'; } },
           grid: { color: '#f1f5f9' },
           border: { display: false }
         }
@@ -650,7 +579,9 @@
     }
   });
 
-  // Landing Page logic removed
+  /* ---- Initial render ---- */
+  updateKPIs();
+  calc();
 </script>
 
 </body>
