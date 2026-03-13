@@ -264,28 +264,28 @@
 
   <header>
     <h1>Revenue Growth Bonus</h1>
-    <p class="subtitle">Sniffers Mag + Higher Ground. 10% combined growth triggers a $20,000 bonus. Baseline: FY2025. Use the toggle to compare source figures against a commissions-only view.</p>
+    <p class="subtitle">Sniffers Mag + Higher Ground. 10% combined growth triggers a $20,000 bonus. Baseline: FY2025. Reimbursements excluded. Use the toggle to compare commissions + advances against commissions only.</p>
   </header>
 
   <!-- Context card -->
   <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--primary); background: #f1f5f9;">
     <h3 style="margin-bottom: 0.5rem; color: var(--primary);">What's changed</h3>
     <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">
-      The updated P&L now separates <strong>advances</strong> from commissions in Higher Ground's trading income. Use the toggle below to compare the full source figures against a commissions-only view, helping determine a fair baseline for the bonus calculation.
+      The updated P&L now separates <strong>advances</strong> from commissions in Higher Ground's trading income. Reimbursements are excluded from all calculations. Use the toggle below to compare commissions + advances against commissions only, helping determine a fair baseline for the bonus.
     </p>
   </div>
 
   <!-- Toggle -->
   <div class="toggle-section">
     <div class="toggle-wrapper">
-      <span class="toggle-label active" id="label-source">Source P&L</span>
+      <span class="toggle-label active" id="label-source">Commissions and advances combined</span>
       <label class="toggle-switch">
         <input type="checkbox" id="adj-toggle" onchange="toggleView()">
         <span class="toggle-slider"></span>
       </label>
       <span class="toggle-label" id="label-adjusted">Commissions only</span>
     </div>
-    <p class="toggle-desc" id="toggle-desc">Showing total trading income as reported in the P&L, including advances and reimbursements.</p>
+    <p class="toggle-desc" id="toggle-desc">Showing commissions and advances combined. Reimbursements excluded.</p>
   </div>
 
   <!-- KPIs -->
@@ -293,7 +293,7 @@
     <div class="kpi-card">
       <div class="kpi-label">Baseline (FY2025)</div>
       <div class="kpi-value" id="kpi-baseline"></div>
-      <div class="kpi-sub" style="color: var(--text-muted)" id="kpi-baseline-sub">Total trading income</div>
+      <div class="kpi-sub" style="color: var(--text-muted)" id="kpi-baseline-sub">Commissions + advances</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">10% target (bonus starts here)</div>
@@ -395,7 +395,7 @@
       </details>
       <details>
         <summary>What is the difference between the two toggle views?</summary>
-        <div class="faq-answer"><strong>Source P&L</strong> shows total trading income as reported, including advances to artists and reimbursement pass-throughs. <strong>Commissions only</strong> strips out advances ($429K in FY2025) and reimbursements ($90K in FY2025), leaving only earned commission income for Higher Ground. Comparing the two helps determine a fair baseline figure.</div>
+        <div class="faq-answer"><strong>Commissions and advances combined</strong> includes both earned commissions and artist advances, with reimbursements excluded. <strong>Commissions only</strong> further strips out advances ($429K in FY2025), leaving only earned commission income for Higher Ground. Comparing the two helps determine a fair baseline figure.</div>
       </details>
       <details>
         <summary>Why do advances matter?</summary>
@@ -435,7 +435,8 @@
 
   /* ---- Helpers ---- */
   function isAdj()       { return document.getElementById('adj-toggle').checked; }
-  function baseline(adj) { return SM[BASE_IDX] + (adj ? HG.commissions[BASE_IDX] : HG.total[BASE_IDX]); }
+  function hgRevenue(adj, i) { return adj ? HG.commissions[i] : HG.commissions[i] + HG.advances[i]; }
+  function baseline(adj) { return SM[BASE_IDX] + hgRevenue(adj, BASE_IDX); }
   function target(adj)   { return baseline(adj) * 1.1; }
   function fmt(n)        { return '$' + Math.round(n).toLocaleString('en-NZ'); }
   function parse(v)      { var c = v.replace(/[^0-9.]/g, ''); return c ? parseFloat(c) : 0; }
@@ -446,7 +447,7 @@
     document.getElementById('kpi-baseline').textContent = fmt(b);
     document.getElementById('kpi-target').textContent   = fmt(t);
     document.getElementById('kpi-growth').textContent    = fmt(t - b);
-    document.getElementById('kpi-baseline-sub').textContent = adj ? 'Commissions only' : 'Total trading income';
+    document.getElementById('kpi-baseline-sub').textContent = adj ? 'Commissions only' : 'Commissions + advances';
     document.getElementById('step-baseline').textContent = 'FY2025: ' + fmt(b) + ' combined revenue.';
     document.getElementById('step-result').textContent   = '10%+ (' + fmt(t) + ') = $20K bonus.';
   }
@@ -493,13 +494,12 @@
     document.getElementById('label-source').className   = 'toggle-label' + (adj ? '' : ' active');
     document.getElementById('label-adjusted').className  = 'toggle-label' + (adj ? ' active' : '');
     document.getElementById('toggle-desc').textContent   = adj
-      ? 'Excluding advances and reimbursements from Higher Ground. Showing commissions only for a cleaner growth measure.'
-      : 'Showing total trading income as reported in the P&L, including advances and reimbursements.';
+      ? 'Excluding advances from Higher Ground. Showing commissions only for a cleaner growth measure.'
+      : 'Showing commissions and advances combined. Reimbursements excluded.';
 
-    // chart datasets 2 = HG Advances, 3 = HG Reimbursements
+    // chart dataset 2 = HG Advances
     revenueChart.data.datasets[2].hidden = adj;
-    revenueChart.data.datasets[3].hidden = adj;
-    revenueChart.data.datasets[4].data   = [null, null, null, null, target(adj)];
+    revenueChart.data.datasets[3].data   = [null, null, null, null, target(adj)];
     revenueChart.update();
 
     updateKPIs();
@@ -537,13 +537,6 @@
           backgroundColor: '#c084fc',
           borderRadius: 4,
           hoverBackgroundColor: '#a855f7'
-        },
-        {
-          label: 'HG Reimbursements',
-          data: HG.reimbursements.concat([null]),
-          backgroundColor: '#e9d5ff',
-          borderRadius: 4,
-          hoverBackgroundColor: '#d8b4fe'
         },
         {
           label: '10% target',
